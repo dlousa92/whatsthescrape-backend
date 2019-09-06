@@ -15,6 +15,7 @@ app.get('/scrape', (req, res) => {
   let data
   let text
 
+  // If no url provided, don't do anything
   if (!url) {
     return
   }
@@ -22,8 +23,10 @@ app.get('/scrape', (req, res) => {
   request(url, function (error, response, html) {
     if (!error) {
       data = cheerio.load(html)
+      // Get text on webpage
       text = data.text()
 
+      // Remove whitespace and non alphanumeric characters, change text to be lowercase
       text = text.replace(/\s+/g, ' ')
         .replace(/[^a-zA-Z ]/g, '')
         .toLowerCase()
