@@ -13,6 +13,7 @@ app.get('/', (req, res) =>
 app.get('/scrape', (req, res) => {
   let url = req.query.url
   let data
+  let text
 
   if (!url) {
     return
@@ -21,9 +22,13 @@ app.get('/scrape', (req, res) => {
   request(url, function (error, response, html) {
     if (!error) {
       data = cheerio.load(html)
-      console.log(data)
+      text = data.text()
+
+      text = text.replace(/\s+/g, ' ')
+        .replace(/[^a-zA-Z ]/g, '')
+        .toLowerCase()
     }
-    res.send(data.text())
+    res.send(text)
   })
 })
 
