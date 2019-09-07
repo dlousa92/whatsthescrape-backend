@@ -24,7 +24,7 @@ app.get('/scrape', (req, res) => {
     if (!error) {
       data = cheerio.load(html)
       // Get text on webpage
-      text = data.text()
+      text = data('body').text()
 
       // Remove whitespace and non alphanumeric characters, change text to be lowercase
       text = text.replace(/\s+/g, ' ')
