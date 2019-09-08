@@ -30,6 +30,8 @@ app.get('/scrape', (req, res) => {
       text = text.replace(/\s+/g, ' ')
         .replace(/[^a-zA-Z ]/g, '')
         .toLowerCase()
+    } else {
+      console.log(`There has been an error ${error}`)
     }
     res.send(text)
   })
