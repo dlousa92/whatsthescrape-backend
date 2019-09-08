@@ -35,4 +35,8 @@ app.get('/scrape', (req, res) => {
   })
 })
 
+app.get('/scrape-img', (req, res) => {
+  res.send('hello world this is another request')
+})
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
