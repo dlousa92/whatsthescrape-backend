@@ -1,6 +1,7 @@
 const express = require('express')
 const request = require('request')
 const cheerio = require('cheerio')
+const util = require('util')
 const app = express()
 const port = 8000
 
@@ -38,7 +39,31 @@ app.get('/scrape', (req, res) => {
 })
 
 app.get('/scrape-img', (req, res) => {
-  res.send('hello world this is another request')
+  let url = req.query.url
+  let data
+  let imageArray = []
+
+  // If no url provided, don't do anything
+  if (!url) {
+    return
+  }
+
+  request(url, function (error, response, html) {
+    if (!error) {
+      data = cheerio.load(html)
+
+      // Send each images src and alt attributes to the front end
+      data('img').each(function () {
+        imageArray.push({
+          src: `${this.attribs.src}`,
+          alt: `${this.attribs.alt}`
+        })
+      })
+    } else {
+      console.log(`There has been an error ${error}`)
+    }
+    res.send(imageArray)
+  })
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
