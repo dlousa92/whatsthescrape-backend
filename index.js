@@ -1,15 +1,10 @@
 const express = require('express')
 const request = require('request')
 const cheerio = require('cheerio')
-const util = require('util')
 const app = express()
 const port = 8000
 
 const cors = require('cors')
-
-app.get('/', (req, res) =>
-  res.send('Hello World!')
-)
 
 app.get('/scrape', (req, res) => {
   let url = req.query.url
