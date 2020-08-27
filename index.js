@@ -2,7 +2,7 @@ const express = require("express");
 const request = require("request");
 const cheerio = require("cheerio");
 const app = express();
-const port = 8000;
+const localPort = 8000;
 
 const cors = require("cors");
 
@@ -64,4 +64,4 @@ app.get("/scrape-img", (req, res) => {
   });
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT || localPort);
