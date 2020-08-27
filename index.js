@@ -1,64 +1,67 @@
-const express = require('express')
-const request = require('request')
-const cheerio = require('cheerio')
-const app = express()
-const port = 8000
+const express = require("express");
+const request = require("request");
+const cheerio = require("cheerio");
+const app = express();
+const port = 8000;
 
-const cors = require('cors')
+const cors = require("cors");
 
-app.get('/scrape', (req, res) => {
-  let url = req.query.url
-  let data
-  let text
+app.use(cors());
+
+app.get("/scrape", (req, res) => {
+  let url = req.query.url;
+  let data;
+  let text;
 
   // If no url provided, don't do anything
   if (!url) {
-    return
+    return;
   }
 
   request(url, function (error, response, html) {
     if (!error) {
-      data = cheerio.load(html)
+      data = cheerio.load(html);
       // Get text on webpage
-      text = data('body').text()
+      text = data("body").text();
 
       // Remove whitespace and non alphanumeric characters, change text to be lowercase
-      text = text.replace(/\s+/g, ' ')
-        .replace(/[^a-zA-Z ]/g, '')
-        .toLowerCase()
+      text = text
+        .replace(/\s+/g, " ")
+        .replace(/[^a-zA-Z ]/g, "")
+        .toLowerCase();
     } else {
-      console.log(`There has been an error ${error}`)
+      console.log(`There has been an error ${error}`);
     }
-    res.send(text)
-  })
-})
+    res.send(text);
+  });
+});
 
-app.get('/scrape-img', (req, res) => {
-  let url = req.query.url
-  let data
-  let imageArray = []
+app.get("/scrape-img", (req, res) => {
+  let url = req.query.url;
+  let data;
+  let imageArray = [];
 
   // If no url provided, don't do anything
   if (!url) {
-    return
+    return;
   }
 
   request(url, function (error, response, html) {
     if (!error) {
-      data = cheerio.load(html)
+      data = cheerio.load(html);
 
       // Send each images src and alt attributes to the front end
-      data('img').each(function () {
+      data("img").each(function () {
         imageArray.push({
           src: `${this.attribs.src}`,
-          alt: `${this.attribs.alt}`
-        })
-      })
+          alt: `${this.attribs.alt}`,
+        });
+      });
     } else {
-      console.log(`There has been an error ${error}`)
+      console.log(`There has been an error ${error}`);
     }
-    res.send(imageArray)
-  })
-})
+    res.send(imageArray);
+  });
+});
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
