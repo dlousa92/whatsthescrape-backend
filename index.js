@@ -64,4 +64,4 @@ app.get("/scrape-img", (req, res) => {
   });
 });
 
-app.listen(process.env.PORT || localPort);
+app.listen(process.env.PORT);
